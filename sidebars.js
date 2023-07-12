@@ -58,6 +58,7 @@ module.exports = {
       label: 'CLI Reference',
       items: [
         'cli-reference/cli',
+        'cli-reference/daos',
         'cli-reference/datalayer',
         'cli-reference/dids',
         'cli-reference/nfts',

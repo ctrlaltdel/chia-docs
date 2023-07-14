@@ -326,6 +326,8 @@ Treasury ID: 0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a2a98bf5611016504088
 
 Functionality: Create and add a proposal to a DAO
 
+There are currently three supported proposal types: spend some of the treasury, update the DAO rules, and mint more of the DAO's CAT.
+
 ### `mint`
 
 Functionality: Create a proposal to mint new DAO CATs
@@ -338,7 +340,7 @@ Options:
 | :------------ | :---------------- | :------ | :------- | :------------------------------------------------------------------------------------------------------- |
 | -wp           | --wallet-rpc-port | INTEGER | False    | Set the port where the Wallet is hosting the RPC interface. See the rpc_port under wallet in config.yaml |
 | -f            | --fingerprint     | INTEGER | False    | Set the fingerprint to specify which key to use                                                          |
-| -i            | --wallet-id       | INTEGER | True     | ID of the wallet to use                                                                                  |
+| -i            | --wallet-id       | INTEGER | True     | ID of the DAO wallet to use                                                                                  |
 | -a            | --amount          | INTEGER | True     | The amount of new cats the proposal will mint (in mojos)                                                 |
 | -t            | --to-address      | TEXT    | True     | The address new cats will be minted to                                                                   |
 | -v            | --vote-amount     | INTEGER | True     | The number of votes to add                                                                               |

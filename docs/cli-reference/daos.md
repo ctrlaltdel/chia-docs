@@ -284,7 +284,7 @@ Profile 1:
    -Pending Total Balance: 1.0
    -Spendable:             1.0
    -Type:                  DAO
-   -Asset ID:              {"treasury_id": "0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
+   -Asset ID:              {\"treasury_id\": \"0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
    -Wallet ID:             6
 
 CAT a62a729da3c90a22...:
@@ -388,14 +388,79 @@ Options:
 <details>
    <summary>Example</summary>
 
-```bash
+Be sure to have some CATs locked up for voting. To view the number of CATs that have been locked, run `chia wallet show`:
 
+```bash
+chia wallet show
 ```
 
 Response:
 
 ```
+Chia Wallet:
+   -Total Balance:         0.999849898999 txch (999849898999 mojo)
+   -Pending Total Balance: 0.999849898999 txch (999849898999 mojo)
+   -Spendable:             0.999849898999 txch (999849898999 mojo)
+   -Type:                  STANDARD_WALLET
+   -Wallet ID:             1
 
+Profile 1:
+   -Total Balance:         1.0
+   -Pending Total Balance: 4000000000001.0
+   -Spendable:             4000000000001.0
+   -Type:                  DAO
+   -Asset ID:              {"treasury_id": "0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
+   -Wallet ID:             6
+
+CAT a62a729da3c90a22...:
+   -Total Balance:         0.0  (0 mojo)
+   -Pending Total Balance: 0.0  (0 mojo)
+   -Spendable:             0.0  (0 mojo)
+   -Type:                  CAT
+   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
+   -Wallet ID:             7
+
+CAT a62a729da3c90a22...:
+   -Total Balance:         100000.0
+   -Pending Total Balance: 0.0
+   -Spendable:             0.0
+   -Type:                  DAO_CAT
+   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
+   -Wallet ID:             8
+```
+
+In this case, 100 `DAO_CAT` have been locked (100,000 mojos). To learn how to lock up these CATs, see the [lockup-coins](#lockup-coins) command.
+
+Next, create the proposal. In this case, we will propose to send 1 XCH (`-a`) to a new wallet address (`-t`) and use 50 of our votes to vote "yes" (`-v`) while adding a 100-million-mojo fee (`-m`)
+
+```bash
+chia dao create-proposal spend -i 6 -t txch1hhyftuy3mtd67lh5vnxf5dtt68jx4cw37qv8pyhujry68lqmtmdqvmvl46 -a 1 -v 50 -m 0.0001
+```
+
+Response:
+
+```bash
+Successfully created proposal.
+Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+```
+
+After the proposal has been confirmed on-chain, you can view the details by running `list-proposals` and passing in your DAO treasury wallet (`6` in this example):
+
+```bash
+chia dao list-proposals -i 6
+```
+
+Response:
+
+```bash
+############################
+Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Status: OPEN
+Votes for: 50
+Votes against: 0
+------------------------
+Proposals have 2 blocks of soft close time.
+############################
 ```
 
 </details>
@@ -615,17 +680,28 @@ Options:
 | -c            | --include-closed              | None    | False    | Set to include previously closed proposals [Default: not set]                                            |
 | -h            | --help                        | None    | False    | Show a help message and exit                                                                             |
 
+This command will list all open proposals by default. 
+If the `-c` flag is included, then all open _and_ closed proposals will be listed. 
+To show the details of a specific proposal, use the [show-proposal](#show-proposal) command.
+
 <details>
    <summary>Example</summary>
 
 ```bash
-
+chia dao list-proposals -i 6
 ```
 
 Response:
 
 ```
-
+############################
+Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Status: OPEN
+Votes for: 50
+Votes against: 0
+------------------------
+Proposals have 2 blocks of soft close time.
+############################
 ```
 
 </details>
@@ -783,20 +859,32 @@ Options:
 | -wp           | --wallet-rpc-port             | INTEGER | False    | Set the port where the Wallet is hosting the RPC interface. See the rpc_port under wallet in config.yaml |
 | -f            | --fingerprint                 | INTEGER | False    | Set the fingerprint to specify which key to use                                                          |
 | -i            | --wallet-id                   | INTEGER | True     | ID of the wallet to use                                                                                  |
-| -p            | --proposal_id                 | TEXT    | True     | The ID of the proposal to fetch                                                                          |
+| -p            | --proposal_id                 | TEXT    | True     | The ID of the proposal to fetch, obtainable by running the [list-proposals](#list-proposals) command     |
 | -h            | --help                        | None    | False    | Show a help message and exit                                                                             |
 
 <details>
    <summary>Example</summary>
 
 ```bash
-
+chia dao show-proposal -i 6 -p 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
 ```
 
 Response:
 
 ```
+Details of Proposal: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+---------------------------
 
+Type: SPEND
+Status: OPEN
+Passed: False
+Yes votes needed: 450
+Closable: False
+Total votes needed: 950
+Blocks remaining: 0
+
+Proposal XCH Conditions
+0xbdc895f091dadbaf7ef464cc9a356bd1e46ae1d1f0187092fc90c9a3fc1b5eda 1000000000000
 ```
 
 </details>

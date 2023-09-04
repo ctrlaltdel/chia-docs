@@ -33,25 +33,104 @@ Options:
 <details>
    <summary>Example</summary>
 
-```bash
+Start with a wallet with some XCH or TXCH:
 
+```bash
+chia wallet show
 ```
 
 Response:
 
 ```
+Wallet height: 3140931
+Sync status: Synced
+Balances, fingerprint: 1520259463
 
+Chia Wallet:
+   -Total Balance:         1.0 txch (1000000000000 mojo)
+   -Pending Total Balance: 1.0 txch (1000000000000 mojo)
+   -Spendable:             1.0 txch (1000000000000 mojo)
+   -Type:                  STANDARD_WALLET
+   -Wallet ID:             1
 ```
+
+Next, join a DAO by passing in its Treasury ID:
+
+```bash
+chia dao add -n "Test DAO Wallet" -t 0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a33a58012cacfea7497a7
+```
+
+At first, the response will indicate that the transaction is in process (you will need to choose your wallet fingerprint if more than one exists):
+
+```bash
+Adding wallet for DAO: 0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a33a58012cacfea7497a7
+This may take awhile.
+```
+
+Eventually, you will receive a message indicating the Treasury ID and the three relevant wallets that have been created:
+
+```bash
+Successfully created DAO Wallet
+DAO Treasury ID: 0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a33a58012cacfea7497a7
+DAO Wallet ID: 2
+CAT Wallet ID: 3
+DAOCAT Wallet ID: 4
+```
+
+At this point, you can show each of these wallets by running `chia wallet show`:
+
+```bash
+chia wallet show
+```
+
+```bash
+Wallet height: 3140950
+Sync status: Synced
+Balances, fingerprint: 1520259463
+
+Chia Wallet:
+   -Total Balance:         1.0 txch (1000000000000 mojo)
+   -Pending Total Balance: 1.0 txch (1000000000000 mojo)
+   -Spendable:             1.0 txch (1000000000000 mojo)
+   -Type:                  STANDARD_WALLET
+   -Wallet ID:             1
+
+Test DAO Wallet:
+   -Total Balance:         2.0
+   -Pending Total Balance: 4000000000002.0
+   -Spendable:             4000000000002.0
+   -Type:                  DAO
+   -Asset ID:              {"treasury_id": "0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a3
+   -Wallet ID:             2
+
+CAT 3c992efe31910882...:
+   -Total Balance:         0.0  (0 mojo)
+   -Pending Total Balance: 0.0  (0 mojo)
+   -Spendable:             0.0  (0 mojo)
+   -Type:                  CAT
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
+
+CAT 3c992efe31910882...:
+   -Total Balance:         0.0
+   -Pending Total Balance: 0.0
+   -Spendable:             0.0
+   -Type:                  DAO_CAT
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
+```
+
+From here, you can add funds, create proposals, vote on proposals, etc.
 
 </details>
 
 ---
 
-## `add-funds`
+## `add_funds`
 
 Functionality: Send funds to a DAO treasury
 
-Usage: chia dao add-funds [OPTIONS]
+Usage: chia dao add_funds [OPTIONS]
 
 Options:
 
@@ -79,9 +158,9 @@ Response:
 
 ```bash
 Chia Wallet:
-   -Total Balance:         4.999989898999 txch (4999989898999 mojo)
-   -Pending Total Balance: 4.999989898999 txch (4999989898999 mojo)
-   -Spendable:             4.999989898999 txch (4999989898999 mojo)
+   -Total Balance:         7.999967047233 txch (7999967047233 mojo)
+   -Pending Total Balance: 7.999967047233 txch (7999967047233 mojo)
+   -Spendable:             7.999967047233 txch (7999967047233 mojo)
    -Type:                  STANDARD_WALLET
    -Wallet ID:             1
 
@@ -90,59 +169,62 @@ Profile 1:
    -Pending Total Balance: 1.0
    -Spendable:             1.0
    -Type:                  DAO
-   -Asset ID:              {"treasury_id": "0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
-   -Wallet ID:             6
+   -Asset ID:              {"treasury_id": "0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a3
+   -Wallet ID:             2
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         100.0  (100000 mojo)
    -Pending Total Balance: 100.0  (100000 mojo)
    -Spendable:             100.0  (100000 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         0.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
-Add funds from the main Chia Wallet (ID `1`) to the DAO Wallet (ID `6`):
+Add funds from the main Chia Wallet (ID `1`) to the DAO Wallet (ID `2`).
+
+Note that the `Wallet IDs` shown here are only examples; yours may differ.
 
 ```bash
-chia dao add-funds -i 6 --funding-wallet-id 1 -a 4 -m 0.00001
+chia dao add_funds -i 2 --funding-wallet-id 1 -a 4 -m 0.00001
 ```
 
 Response:
 
 ```bash
+To get status, use command: chia wallet get_transaction -f 4274545844 -tx 0x0xa70b80291312e444e04ca9017a92b4998b05030e1428097760b4e33dbf25becb
 Transaction submitted to nodes: [{'peer_id': 'b3d9de85d29931c10050b56c7afb91c99141943fc81ff2d1a8425e52be0d08ab', 'inclusion_status': 'SUCCESS', 'error_msg': None}]
-Run 'chia wallet get_transaction -f 3588571699 -tx 0xbcb4ac4664977d58a1fa2ecdd264b1653e167c564bea16f641837c9d53a9da80' to get status
+Run 'chia wallet get_transaction -f 4274545844 -tx 0x0xa70b80291312e444e04ca9017a92b4998b05030e1428097760b4e33dbf25becb' to get status
 ```
 
 After a few minutes, verify that the transaction was processed successfully:
 
 ```bash
-chia wallet get_transaction -f 3588571699 -tx 0xbcb4ac4664977d58a1fa2ecdd264b1653e167c564bea16f641837c9d53a9da80
+chia wallet get_transaction -f 4274545844 -tx 0xa70b80291312e444e04ca9017a92b4998b05030e1428097760b4e33dbf25becb
 ```
 
 Response:
 
 ```bash
-Transaction bcb4ac4664977d58a1fa2ecdd264b1653e167c564bea16f641837c9d53a9da80
+Transaction a70b80291312e444e04ca9017a92b4998b05030e1428097760b4e33dbf25becb
 Status: Confirmed
 Amount sent: 4 TXCH
-To address: txch1czw54246e0qmjhha28787cc67lquzxuntkl774ppalpzm8j2whcsxp9nyd
-Created at: 2023-07-13 07:59:32
+To address: txch1cvm70qkt9fepp8jl8xdqklpe5trhaqj2ruca25vhmyeh3xd7tdwsk9n0vk
+Created at: 2023-09-01 16:21:36
 ```
 
-At this point, 4 TXCH has been removed from wallet `1` and added to wallet `6`, which can be verified by running `get-balance`:
+At this point, 4 TXCH has been removed from wallet `1` and added to wallet `2`, which can be verified by running `get_balance`:
 
 ```bash
- chia dao get-balance -i 6
+chia dao get_balance -i 2
 ```
 
 Response:
@@ -155,11 +237,11 @@ XCH: 4.0
 
 ---
 
-## `close-proposal`
+## `close_proposal`
 
 Functionality: Close a DAO proposal
 
-Usage: chia dao close-proposal [OPTIONS]
+Usage: chia dao close_proposal [OPTIONS]
 
 Options:
 
@@ -177,14 +259,91 @@ Options:
 <details>
    <summary>Example</summary>
 
-```bash
+First, show the status of a proposal:
 
+```bash
+chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 ```
 
 Response:
 
+```bash
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+---------------------------
+
+Type: SPEND
+Status: OPEN
+Passed: True
+Closable: True
+
+Proposal XCH Conditions
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
 ```
 
+This proposal's status for `Closable` is `True`, so it can be closed. To do this, run the `close_proposal` command:
+
+```bash
+chia dao close_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990 -m 0.0006
+```
+
+Response:
+
+```bash
+Submitted proposal close transaction with name: 0x4a7a299233a630d75e83e1766e2e61aae7bbdadc96abbc38b86bfaf9657cf0c6
+```
+
+After the transaction has been confirmed on-chain, view the status of the proposal once again:
+
+```bash
+chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+```
+
+Response:
+
+```bash
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+---------------------------
+
+Type: SPEND
+Status: CLOSED
+Passed: True
+
+Proposal XCH Conditions
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
+```
+
+This proposal is now closed. The treasury's balance prior to the proposal being created was 4.9 XCH. 
+Verify that 1 XCH was deducted by showing the current balance:
+
+```bash
+chia dao get_balance -i 2
+```
+
+Response:
+
+```bash
+XCH: 3.9
+```
+
+Another way to verify that the correct amount of XCH was spend from treasury is to show the recipient's wallet:
+
+```bash
+chia wallet show -f 2456044523
+```
+
+Response:
+
+```bash
+Wallet height: 3141611
+Sync status: Synced
+Balances, fingerprint: 2456044523
+
+Chia Wallet:
+   -Total Balance:         1.0 txch (1000000000000 mojo)
+   -Pending Total Balance: 1.0 txch (1000000000000 mojo)
+   -Spendable:             1.0 txch (1000000000000 mojo)
+   -Type:                  STANDARD_WALLET
+   -Wallet ID:             1
 ```
 
 </details>
@@ -253,13 +412,15 @@ Response:
 
 ```bash
 Successfully created DAO Wallet
-DAO Treasury ID: 0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a2a98bf5611016504088
-DAO Wallet ID: 6
-CAT Wallet ID: 7
-DAOCAT Wallet ID: 8
+DAO Treasury ID: 0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a33a58012cacfea7497a7
+DAO Wallet ID: 2
+CAT Wallet ID: 3
+DAOCAT Wallet ID: 4
 ```
 
-Verify that the creation was successful by showing the wallet:
+Multiple on-chain transactions will be performed. This will take a few minutes.
+
+To verify that the creation was successful, show your wallet:
 
 ```bash
 chia wallet show
@@ -268,14 +429,10 @@ chia wallet show
 Response:
 
 ```bash
-Wallet height: 2904254
-Sync status: Synced
-Balances, fingerprint: 3588571699
-
 Chia Wallet:
-   -Total Balance:         4.999989898999 txch (4999989898999 mojo)
-   -Pending Total Balance: 4.999989898999 txch (4999989898999 mojo)
-   -Spendable:             4.999989898999 txch (4999989898999 mojo)
+   -Total Balance:         7.999967047233 txch (7999967047233 mojo)
+   -Pending Total Balance: 7.999967047233 txch (7999967047233 mojo)
+   -Spendable:             7.999967047233 txch (7999967047233 mojo)
    -Type:                  STANDARD_WALLET
    -Wallet ID:             1
 
@@ -284,32 +441,32 @@ Profile 1:
    -Pending Total Balance: 1.0
    -Spendable:             1.0
    -Type:                  DAO
-   -Asset ID:              {\"treasury_id\": \"0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
-   -Wallet ID:             6
+   -Asset ID:              {"treasury_id": "0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a3
+   -Wallet ID:             2
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         100.0  (100000 mojo)
    -Pending Total Balance: 100.0  (100000 mojo)
    -Spendable:             100.0  (100000 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         0.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
 Recall from the DAO's creation response message that the primary DAO wallet's ID is `6`, the CAT wallet's ID is `7`, and the DAO CAT wallet's ID is `8`.
 
-It is also possible to obtain the DAO's Treasury ID by calling `get-id` and supplying the DAO wallet's ID:
+It is also possible to obtain the DAO's Treasury ID by calling `get_id` and supplying the DAO wallet's ID:
 
 ```bash
-chia dao get-id -i 6
+chia dao get_id -i 6
 ```
 
 Response:
@@ -322,7 +479,7 @@ Treasury ID: 0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a2a98bf5611016504088
 
 ---
 
-## create-proposal
+## create_proposal
 
 Functionality: Create and add a proposal to a DAO
 
@@ -332,7 +489,7 @@ There are currently three supported proposal types: spend some of the treasury, 
 
 Functionality: Create a proposal to mint new DAO CATs
 
-Usage: chia dao create-proposal [OPTIONS]
+Usage: chia dao create_proposal [OPTIONS]
 
 Options:
 
@@ -367,7 +524,7 @@ Response:
   
 Functionality: Create a proposal to spend DAO funds
 
-Usage: chia dao create-proposal [OPTIONS]
+Usage: chia dao create_proposal [OPTIONS]
 
 Options:
 
@@ -398,9 +555,9 @@ Response:
 
 ```
 Chia Wallet:
-   -Total Balance:         0.999849898999 txch (999849898999 mojo)
-   -Pending Total Balance: 0.999849898999 txch (999849898999 mojo)
-   -Spendable:             0.999849898999 txch (999849898999 mojo)
+   -Total Balance:         3.999927047233 txch (3999927047233 mojo)
+   -Pending Total Balance: 3.999927047233 txch (3999927047233 mojo)
+   -Spendable:             3.999927047233 txch (3999927047233 mojo)
    -Type:                  STANDARD_WALLET
    -Wallet ID:             1
 
@@ -409,52 +566,53 @@ Profile 1:
    -Pending Total Balance: 4000000000001.0
    -Spendable:             4000000000001.0
    -Type:                  DAO
-   -Asset ID:              {"treasury_id": "0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
-   -Wallet ID:             6
+   -Asset ID:              {"treasury_id": "0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a3
+   -Wallet ID:             2
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         0.0  (0 mojo)
    -Pending Total Balance: 0.0  (0 mojo)
    -Spendable:             0.0  (0 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         100000.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
-In this case, 100 `DAO_CAT` have been locked (100,000 mojos). To learn how to lock up these CATs, see the [lockup-coins](#lockup-coins) command.
+In this case, 100 `DAO_CAT` have been locked (100,000 mojos). To learn how to lock up these CATs, see the [lockup_coins](#lockup_coins) command.
 
 Next, create the proposal. In this case, we will propose to send 1 XCH (`-a`) to a new wallet address (`-t`) and use 50 of our votes to vote "yes" (`-v`) while adding a 100-million-mojo fee (`-m`)
 
 ```bash
-chia dao create-proposal spend -i 6 -t txch1hhyftuy3mtd67lh5vnxf5dtt68jx4cw37qv8pyhujry68lqmtmdqvmvl46 -a 1 -v 50 -m 0.0001
+chia dao create_proposal spend -i 2 -t txch1rmsnktmn5yga6j5jx65nqnl8rwcmfg4hpdtjdk4ztw2236dt23jsanqhey -a 1 -v 50 -m 0.0001
 ```
 
 Response:
 
 ```bash
+Created spend proposal for asset: None
 Successfully created proposal.
-Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Proposal ID: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 ```
 
-After the proposal has been confirmed on-chain, you can view the details by running `list-proposals` and passing in your DAO treasury wallet (`6` in this example):
+After the proposal has been confirmed on-chain, you can view the details by running `list_proposals` and passing in your DAO treasury wallet (`2` in this example):
 
 ```bash
-chia dao list-proposals -i 6
+chia dao list_proposals -i 2
 ```
 
 Response:
 
 ```bash
 ############################
-Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Proposal ID: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 Status: OPEN
 Votes for: 50
 Votes against: 0
@@ -463,13 +621,37 @@ Proposals have 2 blocks of soft close time.
 ############################
 ```
 
+You can also obtain more details about the proposal from the `show_proposal` command:
+
+```bash
+chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+```
+
+Response:
+
+```bash
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+---------------------------
+
+Type: SPEND
+Status: OPEN
+Passed: False
+Yes votes needed: 450
+Closable: False
+Total votes needed: 950
+Blocks remaining: 8
+
+Proposal XCH Conditions
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
+```
+
 </details>
 
 ### `update`
   
 Functionality: Create a proposal to change the DAO rules
 
-Usage: chia dao create-proposal [OPTIONS]
+Usage: chia dao create_proposal [OPTIONS]
 
 Options:
 
@@ -506,11 +688,11 @@ Response:
 
 ---
 
-## `exit-lockup`
+## `exit_lockup`
 
 Functionality: Release DAO CATs from voting mode
 
-Usage: chia dao exit-lockup [OPTIONS]
+Usage: chia dao exit_lockup [OPTIONS]
 
 Options:
 
@@ -537,33 +719,33 @@ chia wallet show
 This truncated response shows that 26 tokens are unlocked, and 74 tokens are locked:
 
 ```bash
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         26.0  (26000 mojo)
    -Pending Total Balance: 26.0  (26000 mojo)
    -Spendable:             26.0  (26000 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         74000.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
 Next, unlock all tokens that are available to be unlocked (they cannot have been used to vote on any active proposals):
 
 ```bash
-chia dao exit-lockup -i 6 -m 0.00001
+chia dao exit_lockup -i 2 -m 0.00001
 ```
 
 Response:
 
 ```
-Transaction submitted.
+Transaction submitted with spend bundle ID: 0xbe3da7977dd5674ef58a7d8dbd975a990ab52afea11312a06f9edfe0b8f33aff.
 ```
 
 After the transaction has been confirmed, verify that the tokens have been unlocked:
@@ -598,11 +780,11 @@ There are now 100 unlocked tokens and 0 locked tokens.
 
 ---
 
-## `get-balance`
+## `get_balance`
 
 Functionality: Get the asset balances for a DAO treasury
 
-Usage: chia dao get-balance [OPTIONS]
+Usage: chia dao get_balance [OPTIONS]
 
 Options:
 
@@ -617,7 +799,7 @@ Options:
    <summary>Example</summary>
 
 ```bash
-chia dao get-balance -i 6
+chia dao get_balance -i 2
 ```
 
 Response:
@@ -630,11 +812,11 @@ XCH: 4.0
 
 ---
 
-## `get-id`
+## `get_id`
 
 Functionality: Get the Treasury ID of a DAO
 
-Usage: chia dao get-id [OPTIONS]
+Usage: chia dao get_id [OPTIONS]
 
 Options:
 
@@ -651,24 +833,24 @@ Options:
 Get the ID of an existing treasury:
 
 ```bash
-chia dao get-id -i 6
+chia dao get_id -i 2
 ```
 
 Response:
 
 ```bash
-Treasury ID: 0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a2a98bf5611016504088
+Treasury ID: 0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a33a58012cacfea7497a7
 ```
 
 </details>
 
 ---
 
-## `list-proposals`
+## `list_proposals`
 
 Functionality: List proposals for the DAO
 
-Usage: chia dao list-proposals [OPTIONS]
+Usage: chia dao list_proposals [OPTIONS]
 
 Options:
 
@@ -682,20 +864,20 @@ Options:
 
 This command will list all open proposals by default. 
 If the `-c` flag is included, then all open _and_ closed proposals will be listed. 
-To show the details of a specific proposal, use the [show-proposal](#show-proposal) command.
+To show the details of a specific proposal, use the [show_proposal](#show_proposal) command.
 
 <details>
    <summary>Example</summary>
 
 ```bash
-chia dao list-proposals -i 6
+chia dao list_proposals -i 2
 ```
 
 Response:
 
-```
+```bash
 ############################
-Proposal ID: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Proposal ID: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 Status: OPEN
 Votes for: 50
 Votes against: 0
@@ -708,11 +890,11 @@ Proposals have 2 blocks of soft close time.
 
 ---
 
-## `lockup-coins`
+## `lockup_coins`
 
 Functionality: Lock DAO CATs for voting
 
-Usage: chia dao lockup-coins [OPTIONS]
+Usage: chia dao lockup_coins [OPTIONS]
 
 Options:
 
@@ -741,9 +923,9 @@ Response:
 
 ```bash
 Chia Wallet:
-   -Total Balance:         0.999979898999 txch (999979898999 mojo)
-   -Pending Total Balance: 0.999979898999 txch (999979898999 mojo)
-   -Spendable:             0.999979898999 txch (999979898999 mojo)
+   -Total Balance:         3.999957047233 txch (3999957047233 mojo)
+   -Pending Total Balance: 3.999957047233 txch (3999957047233 mojo)
+   -Spendable:             3.999957047233 txch (3999957047233 mojo)
    -Type:                  STANDARD_WALLET
    -Wallet ID:             1
 
@@ -752,32 +934,55 @@ Profile 1:
    -Pending Total Balance: 4000000000001.0
    -Spendable:             4000000000001.0
    -Type:                  DAO
-   -Asset ID:              {"treasury_id": "0x69dbd335763f5db8dac52b607d8077ff8ee798d127c8a
-   -Wallet ID:             6
+   -Asset ID:              {"treasury_id": "0x95aab47ccaf4d3a3a3b03e08d2625c919edc0208360a3
+   -Wallet ID:             2
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         100.0  (100000 mojo)
    -Pending Total Balance: 100.0  (100000 mojo)
    -Spendable:             100.0  (100000 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         0.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
-In this example, there are 100 tokens in the `CAT` wallet with ID `7`, and 0 tokens in the `DAO_CAT` wallet with ID `8`.
+In this example, there are 100 tokens in the `CAT` wallet with ID `3`, and 0 tokens in the `DAO_CAT` wallet with ID `4`.
 
-Next, run the `lockup-coins` command to lock some of the CATs:
+Next, run the `lockup_coins` command to lock some of the CATs:
 
 ```bash
-chia dao lockup-coins -i 6 -a 74 -m 0.00001
+chia dao lockup_coins -i 2 -a 74 -m 0.00001
+```
+
+The response will show the transaction ID:
+
+```bash
+Transaction submitted to nodes: [{'peer_id': 'b3d9de85d29931c10050b56c7afb91c99141943fc81ff2d1a8425e52be0d08ab', 'inclusion_status': 'SUCCESS', 'error_msg': None}]
+Run 'chia wallet get_transaction -f 4274545844 -tx 0x0x75614b073fe8b2c585e4fa5e4e72c64abbadcb138a196eea619957e9b64681dd' to get status
+```
+
+To see the status of the transaction run the command shown in the output of the `lockup_coins` command. For example:
+
+```bash
+chia wallet get_transaction -f 4274545844 -tx 0x75614b073fe8b2c585e4fa5e4e72c64abbadcb138a196eea619957e9b64681dd
+```
+
+Response:
+
+```bash
+Transaction 75614b073fe8b2c585e4fa5e4e72c64abbadcb138a196eea619957e9b64681dd
+Status: Confirmed
+Amount sent: 74 CAT 3c992efe31910882...
+To address: txch18l0hptmmf74t226gjd58y5tt6x0g88acwk6lenx8cn696q4cs8xsv5vhta
+Created at: 2023-09-04 09:06:58
 ```
 
 After the transaction has been finalized, view the wallet's balance again:
@@ -789,21 +994,21 @@ chia wallet show
 The response will show that the `CAT` wallet's balance has decreased and the `DAO_CAT` wallet's balance has increased:
 
 ```bash
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         26.0  (26000 mojo)
    -Pending Total Balance: 26.0  (26000 mojo)
    -Spendable:             26.0  (26000 mojo)
    -Type:                  CAT
-   -Asset ID:              a62a729da3c90a22aeb648f64a7499680eceef7c4d98a5dd9e7fa5d14fc3c99e
-   -Wallet ID:             7
+   -Asset ID:              3c992efe31910882f35a6e0017b6a7ceb0e2f6f7b96a36285d5d11ea015c05a7
+   -Wallet ID:             3
 
-CAT a62a729da3c90a22...:
+CAT 3c992efe31910882...:
    -Total Balance:         74000.0
    -Pending Total Balance: 0.0
    -Spendable:             0.0
    -Type:                  DAO_CAT
-   -Asset ID:              00000000000000060000000000000007a62a729da3c90a22aeb648f64a749968
-   -Wallet ID:             8
+   -Asset ID:              000000000000000200000000000000033c992efe31910882f35a6e0017b6a7ce
+   -Wallet ID:             4
 ```
 
 The 74 tokens in the `DAO_CAT` wallet can now be used for voting on proposals.
@@ -812,11 +1017,11 @@ The 74 tokens in the `DAO_CAT` wallet can now be used for voting on proposals.
 
 ---
 
-## `release-coins`
+## `release_coins`
 
 Functionality: Release closed proposals from DAO CATs
 
-Usage: chia dao release-coins [OPTIONS]
+Usage: chia dao release_coins [OPTIONS]
 
 Options:
 
@@ -846,11 +1051,11 @@ Response:
 
 ---
 
-## `show-proposal`
+## `show_proposal`
 
 Functionality: Show the details of a specific proposal
 
-Usage: chia dao show-proposal [OPTIONS]
+Usage: chia dao show_proposal [OPTIONS]
 
 Options:
 
@@ -859,20 +1064,20 @@ Options:
 | -wp           | --wallet-rpc-port             | INTEGER | False    | Set the port where the Wallet is hosting the RPC interface. See the rpc_port under wallet in config.yaml |
 | -f            | --fingerprint                 | INTEGER | False    | Set the fingerprint to specify which key to use                                                          |
 | -i            | --wallet-id                   | INTEGER | True     | ID of the wallet to use                                                                                  |
-| -p            | --proposal_id                 | TEXT    | True     | The ID of the proposal to fetch, obtainable by running the [list-proposals](#list-proposals) command     |
+| -p            | --proposal_id                 | TEXT    | True     | The ID of the proposal to fetch, obtainable by running the [list_proposals](#list_proposals) command     |
 | -h            | --help                        | None    | False    | Show a help message and exit                                                                             |
 
 <details>
    <summary>Example</summary>
 
 ```bash
-chia dao show-proposal -i 6 -p 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 ```
 
 Response:
 
 ```
-Details of Proposal: 0x4d267d3a66038f9ec4d097291be4b53e8bf944b71315d119357723b888cae28c
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
 ---------------------------
 
 Type: SPEND
@@ -881,10 +1086,10 @@ Passed: False
 Yes votes needed: 450
 Closable: False
 Total votes needed: 950
-Blocks remaining: 0
+Blocks remaining: 8
 
 Proposal XCH Conditions
-0xbdc895f091dadbaf7ef464cc9a356bd1e46ae1d1f0187092fc90c9a3fc1b5eda 1000000000000
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
 ```
 
 </details>
@@ -914,14 +1119,64 @@ Options:
 <details>
    <summary>Example</summary>
 
-```bash
+Start by showing the status of a proposal:
 
+```bash
+chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+```
+
+Response:
+
+```bash
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+---------------------------
+
+Type: SPEND
+Status: OPEN
+Passed: False
+Yes votes needed: 450
+Closable: False
+Total votes needed: 950
+Blocks remaining: 0
+
+Proposal XCH Conditions
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
+```
+
+In this example, 450 "Yes" votes are still needed, along with 950 total votes. Next we'll add 100 "yes" votes:
+
+```bash
+chia dao vote -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990 -a 100 -m 0.0001
 ```
 
 Response:
 
 ```
+Submitted spend bundle with name: 0x5975b2e846cbd75335d3ed98a72af1edb4bdaaaf0817307b185d94ff9ad3c2ed
+```
 
+After the transaction has been confirmed on-chain, show the proposal again:
+
+```bash
+ chia dao show_proposal -i 2 -p 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+```
+
+The response shows that the 100 "Yes" votes have been counted:
+
+```bash
+Details of Proposal: 0xacbc7be5de1f76807965200033d2ab821368838db6577384dfea87ec8fc25990
+---------------------------
+
+Type: SPEND
+Status: OPEN
+Passed: False
+Yes votes needed: 350
+Closable: False
+Total votes needed: 850
+Blocks remaining: 0
+
+Proposal XCH Conditions
+0x1ee13b2f73a111dd4a9236a9304fe71bb1b4a2b70b5726daa25b94a8e9ab5465 1000000000000
 ```
 
 </details>
